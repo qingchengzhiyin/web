@@ -86,45 +86,61 @@
 
   <!-- User Information Table -->
   <div class="container mt-4">
-    <h2>User Management</h2>
+    <h2>House Management</h2>
 
     <!-- Add User Button -->
-    <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addUserModal">
-      添加用户
+    <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addHouseModal">
+      添加房源
     </button>
 
     <!-- Add User Modal -->
-    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
-      <!-- Modal Content for Adding User -->
-      <!-- Add User Form -->
-      <form id="addForm" action="/web/admin/users" method="post">
+    <div class="modal fade" id="addHouseModal" tabindex="-1" role="dialog" aria-labelledby="addHouseModalLabel" aria-hidden="true">
+      <!-- Modal Content for Adding House -->
+      <!-- Add House Form -->
+      <form id="addForm" action="/web/admin/houses" method="post">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="addUserModalLabel">添加用户</h5>
+              <h5 class="modal-title" id="addHouseModalLabel">添加房源</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <div class="form-group">
-                <label for="newUsername">用户名</label>
-                <input type="text" class="form-control" id="newUsername" name="newUsername" placeholder="请输入用户名">
+                <label for="newAddress">地址</label>
+                <input type="text" class="form-control" id="newAddress" name="newAddress" placeholder="请输入地址">
               </div>
               <div class="form-group">
-                <label for="newPassword">密码</label>
-                <input type="text" class="form-control" id="newPassword" name="newPassword" placeholder="请输入密码">
+                <label for="newPrice">密码</label>
+                <input type="text" class="form-control" id="newPrice" name="newPrice" placeholder="请输入价格">
               </div>
               <div class="form-group">
-                <label for="newPhone">手机号</label>
-                <input type="text" class="form-control" id="newPhone" name="newPhone" placeholder="请输入手机号">
+                <label for="newCheckStatement">审核情况</label>
+                <input type="text" class="form-control" id="newCheckStatement" name="newCheckStatement" placeholder="请输入审核情况">
+              </div>
+              <div class="form-group">
+                <label for="newTime">发布时间</label>
+                <input type="text" class="form-control" id="newTime" name="newTime" placeholder="请输入发布时间">
+              </div>
+              <div class="form-group">
+                <label for="newRentStatement">租住情况</label>
+                <input type="text" class="form-control" id="newRentStatement" name="newRentStatement" placeholder="请输入租住情况">
+              </div>
+              <div class="form-group">
+                <label for="newHostId">房东</label>
+                <input type="text" class="form-control" id="newHostId" name="newHostId" placeholder="请输入房东">
+              </div>
+              <div class="form-group">
+                <label for="newRentUserId">租户</label>
+                <input type="text" class="form-control" id="newRentUserId" name="newRentUserId" placeholder="请输入房东">
               </div>
               <!-- Hidden field for action -->
               <input type="hidden" name="action" value="add">
             </div>
             <div class="modal-footer">
               <!-- Submit button -->
-              <button type="submit" class="btn btn-primary">添加用户</button>
+              <button type="submit" class="btn btn-primary">添加房源</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
             </div>
           </div>
@@ -138,52 +154,83 @@
       <table class="table table-bordered">
         <thead class="thead-light">
           <tr>
-            <th scope="col">User ID</th>
-            <th scope="col">Username</th>
-            <th scope="col">Phone</th>
-            <th scope="col">Actions</th>
+            <th scope="col">House ID</th>
+            <th scope="col">address</th>
+            <th scope="col">price</th>
+            <th scope="col">checkStatement</th>
+            <th scope="col">time</th>
+            <th scope="col">rentStatement</th>
+            <th scope="col">hostId</th>
+            <th scope="col">rentUserId</th>
+            <th scope="col">action</th>
           </tr>
         </thead>
         <tbody>
           <!-- Sample user data rendered dynamically using JSTL -->
-          <c:forEach items="${userList}" var="user">
+          <c:forEach items="${houseList}" var="house">
             <tr>
-              <th scope="row">${user.id}</th>
-              <td>${user.username}</td>
-              <td>${user.phone}</td>
+              <th scope="row">${house.houseId}</th>
+              <td>${house.address}</td>
+              <td>${house.price}</td>
+              <td>${house.checkStatement}</td>
+              <td>${house.time}</td>
+              <td>${house.rentStatement}</td>
+              <td>${house.hostId}</td>
+              <td>${house.rentUserId}</td>
+
               <td>
 
                 <!-- 触发模态框的编辑按钮 -->
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editUserModal${user.id}">
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editHouseModal${house.houseId}">
                                 Edit
                             </button>
                             <!-- 模态框 -->
-                            <div class="modal fade" id="editUserModal${user.id}" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="editHouseModal${house.houseId}" tabindex="-1" role="dialog" aria-labelledby="editHouseModalLabel" aria-hidden="true">
                                 <!-- 模态框内容 -->
                                 <!-- 编辑用户的表单 -->
-                                <form id="editForm${user.id}" action="/web/admin/users" method="post">
-                                    <!--<input type="hidden" id="editAction${user.id}" name="action" value=""> -->
+                                <form id="editForm${house.houseId}" action="/web/admin/houses" method="post">
+                                    <!--<input type="hidden" id="editAction${house.houseId}" name="action" value=""> -->
 
                                     <!-- 输入框 -->
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                                                <h5 class="modal-title" id="editHouseModalLabel">Edit User</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="form-group">
-                                                    <label for="username">Username</label>
-                                                    <input type="text" class="form-control" id="username" name="username" value="${user.username}">
+                                                    <label for="address">address</label>
+                                                    <input type="text" class="form-control" id="address" name="address" value="${house.address}">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="phone">Phone</label>
-                                                    <input type="text" class="form-control" id="phone" name="phone" value="${user.phone}">
+                                                    <label for="price">price</label>
+                                                    <input type="text" class="form-control" id="price" name="price" value="${house.price}">
                                                 </div>
-                                                <!-- 隐藏用户ID -->
-                                                <input type="hidden" name="userId" value="${user.id}">
+                                                <div class="form-group">
+                                                      <label for="checkStatement">checkstatement</label>
+                                                      <input type="text" class="form-control" id="checkStatement" name="checkStatement" value="${house.checkStatement}">
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="time">time</label>
+                                                      <input type="text" class="form-control" id="time" name="time" value="${house.time}">
+                                                  </div>
+                                                <div class="form-group">
+                                                    <label for="rentStatement">price</label>
+                                                    <input type="text" class="form-control" id="rentStatement" name="rentStatement" value="${house.rentStatement}">
+                                                </div>
+                                                <div class="form-group">
+                                                      <label for="hostId">hostId</label>
+                                                      <input type="text" class="form-control" id="hostId" name="hostId" value="${house.hostId}">
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label for="rentUserId">rentUserId</label>
+                                                      <input type="text" class="form-control" id="rentUserId" name="rentUserId" value="${house.rentUserId}">
+                                                  </div>
+                                                <!-- 隐藏房源ID -->
+                                                <input type="hidden" name="houseId" value="${house.houseId}">
                                                 <input type="hidden" name="action" value="edit">
                                             </div>
                                             <div class="modal-footer">
@@ -196,9 +243,9 @@
                                 </form>
                             </div>
 
-               <form action="/web/admin/users" method="post">
+               <form action="/web/admin/houses" method="post">
                    <input type="hidden" name="action" value="delete">
-                   <input type="hidden" name="userId" value="${user.id}">
+                   <input type="hidden" name="houseId" value="${house.houseId}">
                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                </form>
 

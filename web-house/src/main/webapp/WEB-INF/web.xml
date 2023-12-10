@@ -18,6 +18,16 @@
     <url-pattern>/admin/users</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>AdminHouseServlet</servlet-name>
+    <servlet-class>com.servlet.AdminHouseServlet</servlet-class>
+  </servlet>
+  <!-- Map the servlet to a URL pattern -->
+  <servlet-mapping>
+    <servlet-name>AdminHouseServlet</servlet-name>
+    <url-pattern>/admin/houses</url-pattern>
+  </servlet-mapping>
+
 
 
 

@@ -4,6 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <!-- 其他配置项 -->
+    <properties>
+        <property name="useUnicode" value="true"/>
+        <property name="characterEncoding" value="UTF-8"/>
+    </properties>
     <!-- 数据库环境配置 -->
     <environments default="development">
         <environment id="development">
@@ -21,4 +25,5 @@
         <mapper resource="Mapper.xml"/>
         <!-- 指定你的映射文件路径 -->
     </mappers>
+
 </configuration>

@@ -1,7 +1,7 @@
 package com.servlet;
 
 import com.entity.User;
-import com.mapper.UserMapper;
+import com.mapper.Mapper;
 import com.util.MyBatisUtil;
 
 import javax.servlet.*;
@@ -14,8 +14,10 @@ import org.apache.ibatis.session.SqlSession;
 public class AdminUserServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         try (SqlSession sqlSession = MyBatisUtil.getSqlSessionFactory().openSession()) {
-            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            Mapper userMapper = sqlSession.getMapper(Mapper.class);
             List<User> userList = userMapper.getAllUsers();
 
             // 将用户列表存储在 request 属性中
@@ -28,14 +30,16 @@ public class AdminUserServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
 
         if ("delete".equals(action)) {
-            System.out.println("删除");
+//            System.out.println("删除");
             String userId = request.getParameter("userId");
 
             try (SqlSession sqlSession = MyBatisUtil.getSqlSessionFactory().openSession()) {
-                UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+                Mapper userMapper = sqlSession.getMapper(Mapper.class);
                 userMapper.deleteUserById(Integer.parseInt(userId));
                 sqlSession.commit();
             } catch (Exception e) {
@@ -43,14 +47,14 @@ public class AdminUserServlet extends HttpServlet {
                 // 错误处理
             }
         } else if ("edit".equals(action)) {
-            System.out.println("成功");
+//            System.out.println("成功");
             String userId = request.getParameter("userId");
             String username = request.getParameter("username");
             String phone = request.getParameter("phone");
 
 
             try (SqlSession sqlSession = MyBatisUtil.getSqlSessionFactory().openSession()) {
-                UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+                Mapper userMapper = sqlSession.getMapper(Mapper.class);
 
                 // 根据 userId 获取用户信息
                 User user = userMapper.getUserById(Integer.parseInt(userId));
@@ -67,12 +71,13 @@ public class AdminUserServlet extends HttpServlet {
             }
         }else if ("add".equals(action)){
             try (SqlSession sqlSession = MyBatisUtil.getSqlSessionFactory().openSession()) {
-                UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+                Mapper userMapper = sqlSession.getMapper(Mapper.class);
 
                 String userName = request.getParameter("newUsername");
                 String userPassword = request.getParameter("newPassword");
                 String phone = request.getParameter("newPhone");
                 User newUser = new User(userName,userPassword,phone);
+//                System.out.println(userName);
 
                 userMapper.addUser(newUser);
                 sqlSession.commit();
