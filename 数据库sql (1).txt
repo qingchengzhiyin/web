@@ -1,0 +1,50 @@
+create table admin
+(
+    adminId       int auto_increment
+        primary key,
+    adminName     varchar(20) not null,
+    adminPassword varchar(20) not null
+);
+
+create table user
+(
+    userId      int auto_increment
+        primary key,
+    userName    varchar(20)   not null,
+    userPwd     varchar(20)   not null,
+    phoneNumber varchar(11)   not null comment '手机号',
+    isHost      int default 0 not null comment '1代表该用户是房东，0代表该用户仅是用户'
+)
+    comment '用户';
+
+create table house
+(
+    houseId        int auto_increment comment '房源id'
+        primary key,
+    address        varchar(30)   not null comment '房源地址',
+    price          int           not null comment '房源价格',
+    checkStatement int default 0 not null comment '房源是否审核，1代表已审核，0代表未审核',
+    time           date          not null comment '发布此房源信息的时间',
+    rentStatement  int default 0 not null comment '房屋租住情况，默认值为0代表未被租住，1代表已租住',
+    rentUserId     int           null comment '租用的用户id，无人租用时置null',
+    hostUserId     int           not null comment '该房源的房东用户id',
+    constraint house_user_userId_fk
+        foreign key (rentUserId) references user (userId),
+    constraint house_user_userId_fk2
+        foreign key (hostUserId) references user (userId)
+)
+    comment '房源信息';
+
+create table appointment
+(
+    appointmentId int auto_increment comment '此次预约的id'
+        primary key,
+    userId        int  not null comment '发出此次预约的用户id',
+    houseId       int  not null comment '预约要去的房屋id',
+    time          date not null comment '预约看房时间',
+    constraint appointment_house_houseId_fk
+        foreign key (houseId) references house (houseId),
+    constraint appointment_user_userId_fk
+        foreign key (userId) references user (userId)
+)
+    comment '预约';
