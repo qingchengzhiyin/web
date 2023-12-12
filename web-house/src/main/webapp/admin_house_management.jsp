@@ -100,7 +100,7 @@
     <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
       <!-- Modal Content for Adding User -->
       <!-- Add User Form -->
-      <form id="addForm" action="/web/admin/houses" method="post">
+      <form id="addForm" action="/web/admin/houses" method="post" enctype="multipart/form-data">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -132,10 +132,11 @@
                 <label for="newHostUserId">房东</label>
                 <input type="text" class="form-control" id="newHostUserId" name="newHostUserId" placeholder="请输入房东">
               </div>
-              <div class="form-group">
-                <label for="newImaget">图片</label>
-                <input type="text" class="form-control" id="newImage" name="newImage" placeholder="请输入图片">
-              </div>
+                <div class="form-group">
+                    <label for="newImage">图片</label>
+                    <input type="file" class="form-control-file" id="newImage" name="newImage">
+                </div>
+
               <div class="form-group">
                 <label for="newTitle">标题</label>
                 <input type="text" class="form-control" id="newTitle" name="newTitle" placeholder="请输入标题">
@@ -212,7 +213,7 @@
                             <div class="modal fade" id="editHouseModal${house.houseId}" tabindex="-1" role="dialog" aria-labelledby="editHouseModalLabel" aria-hidden="true">
                                 <!-- 模态框内容 -->
                                 <!-- 编辑用户的表单 -->
-                                <form id="editForm${house.houseId}" action="/web/admin/houses" method="post">
+                                <form id="editForm${house.houseId}" action="/web/admin/houses" method="post" enctype="multipart/form-data">
                                     <!--<input type="hidden" id="editAction${house.houseId}" name="action" value=""> -->
 
                                     <!-- 输入框 -->
@@ -235,7 +236,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="editCheckStatement">审核情况</label>
-                                                    <select class="form-control" id="editCheckStatement" name="editCheckStatement">
+                                                    <select class="form-control" id="checkStatement" name="checkStatement">
                                                         <option value="-1" style="color: red;" ${house.checkStatement eq -1 ? 'selected' : ''}>审核不通过</option>
                                                         <option value="0" style="color: brown;" ${house.checkStatement eq 0 ? 'selected' : ''}>未审核</option>
                                                         <option value="1" style="color: green;" ${house.checkStatement eq 1 ? 'selected' : ''}>审核通过</option>
@@ -246,8 +247,9 @@
                                                     <input type="text" class="form-control" id="hostUserId" name="hostUserId" value="${house.hostUserId}">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="phone">image</label>
-                                                    <input type="text" class="form-control" id="image" name="image" value="${house.image}">
+                                                    <label for="image">image</label>
+                                                    <input type="file" class="form-control-file" id="image" name="image">
+                                                    <input type="hidden" name="originalImage" value="../image/${house.image}">
                                                 </div>
 
                                                 <div class="form-group">

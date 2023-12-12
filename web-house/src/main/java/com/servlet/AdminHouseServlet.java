@@ -5,11 +5,13 @@ import com.mapper.Mapper;
 import com.util.MyBatisUtil;
 
 import javax.servlet.*;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
+@MultipartConfig
 public class AdminHouseServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -45,13 +47,25 @@ public class AdminHouseServlet extends HttpServlet {
                 // 错误处理
             }
         } else if ("edit".equals(action)) {
+            System.out.println("修改");
             String houseId = request.getParameter("houseId");
             String address = request.getParameter("address");
             int price = Integer.parseInt(request.getParameter("price"));
             int checkStatement = Integer.parseInt(request.getParameter("checkStatement"));
             int hostUserId = Integer.parseInt(request.getParameter("hostUserId"));
-            String image = request.getParameter("image");
+//            String image = request.getParameter("image");
             String title = request.getParameter("title");
+            Part filePart = request.getPart("image");
+            // 获取上传的文件名
+            String fileName = filePart.getSubmittedFileName();
+
+
+            String appPath = request.getServletContext().getRealPath("/");
+//                System.out.println(appPath);
+            String imagePath = appPath + "image/" + fileName;
+            filePart.write(imagePath);
+
+
             try (SqlSession sqlSession = MyBatisUtil.getSqlSessionFactory().openSession()) {
                 Mapper houseMapper = sqlSession.getMapper(Mapper.class);
 
@@ -63,7 +77,7 @@ public class AdminHouseServlet extends HttpServlet {
                     house.setPrice(price);
                     house.setCheckStatement(checkStatement);
                     house.setHostUserId(hostUserId);
-                    house.setImage(image);
+                    house.setImage(fileName);
                     house.setTitle(title);
                     houseMapper.updateHouse(house);
                     sqlSession.commit();
@@ -73,6 +87,7 @@ public class AdminHouseServlet extends HttpServlet {
                 // 错误处理
             }
         } else if ("add".equals(action)) {
+//            System.out.println("添加");
             try (SqlSession sqlSession = MyBatisUtil.getSqlSessionFactory().openSession()) {
                 Mapper houseMapper = sqlSession.getMapper(Mapper.class);
 
@@ -81,10 +96,25 @@ public class AdminHouseServlet extends HttpServlet {
                 int price = Integer.parseInt(request.getParameter("newPrice"));
                 int checkStatement = Integer.parseInt(request.getParameter("newCheckStatement"));
                 int hostUserId = Integer.parseInt(request.getParameter("newHostUserId"));
-                String image = request.getParameter("newImage");
+//                String image = request.getParameter("newImage");
                 String title = request.getParameter("newTitle");
+//                System.out.println(2);
+                // 获取文件部分
+                Part filePart = request.getPart("newImage");
+                // 获取上传的文件名
+                String fileName = filePart.getSubmittedFileName();
 
-                House newHouse = new House(address,price,checkStatement,hostUserId,image,title);
+
+                String appPath = request.getServletContext().getRealPath("/");
+//                System.out.println(appPath);
+                String imagePath = appPath + "image/" + fileName;
+                filePart.write(imagePath);
+
+
+//                System.out.println(fileName);
+//                System.out.println(imagePath);
+
+                House newHouse = new House(address,price,checkStatement,hostUserId,fileName,title);
                 // 设置房源信息
                 newHouse.setAddress(address);
                 // 设置其他房源信息
