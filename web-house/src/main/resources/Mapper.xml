@@ -23,33 +23,34 @@
 
     <update id="updateUser" parameterType="com.entity.User">
         UPDATE user
-        SET userName = #{username}, phoneNumber = #{phone}
+        SET userName = #{username}, phoneNumber = #{phone}, isHost = #{isHost}
         WHERE userId = #{id}
     </update>
     <insert id="addUser" parameterType="com.entity.User" >
-        INSERT INTO user (userName, userPwd, phoneNumber) VALUES (#{username}, #{password}, #{phone})
+        INSERT INTO user (userName, userPwd, phoneNumber, isHost) VALUES (#{username}, #{password}, #{phone}, #{isHost})
     </insert>
     <select id="getAllHouses" resultType="com.entity.House">
         SELECT * FROM house
     </select>
 
-    <select id="getHouseById" resultType="com.entity.House">
-        SELECT * FROM house WHERE houseId = #{id}
-    </select>
-
-    <delete id="deleteHouseById">
+    <delete id="deleteHouseById" parameterType="int">
         DELETE FROM house WHERE houseId = #{id}
     </delete>
 
-    <update id="updateHouse">
-        UPDATE house SET address = #{address}, price = #{price}, checkStatement = #{checkStatement},
-        time = #{time}, rentStatement = #{rentStatement}, hostId = #{hostId}, rentUserId = #{rentUserId}
+    <select id="getHouseById" parameterType="int" resultType="com.entity.House">
+        SELECT * FROM house WHERE houseId = #{id}
+    </select>
+
+    <update id="updateHouse" parameterType="com.entity.House">
+        UPDATE house
+        SET address = #{address}, price = #{price}, checkStatement = #{checkStatement},
+        hostUserId = #{hostUserId}, image = #{image}, title = #{title}
         WHERE houseId = #{houseId}
     </update>
 
-    <insert id="addHouse">
-        INSERT INTO house (address, price, checkStatement, time, rentStatement, hostId, rentUserId)
-        VALUES (#{address}, #{price}, #{checkStatement}, #{time}, #{rentStatement}, #{hostId}, #{rentUserId})
+    <insert id="addHouse" parameterType="com.entity.House">
+        INSERT INTO house (address, price, checkStatement, hostUserId, image, title)
+        VALUES (#{address}, #{price}, #{checkStatement}, #{hostUserId}, #{image}, #{title})
     </insert>
 
 </mapper>

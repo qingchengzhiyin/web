@@ -119,6 +119,14 @@
                 <label for="newPhone">手机号</label>
                 <input type="text" class="form-control" id="newPhone" name="newPhone" placeholder="请输入手机号">
               </div>
+            <div class="form-group">
+                <label for="newIsHost">用户身份</label>
+                <select class="form-control" id="newIsHost" name="newIsHost">
+                    <option value="0">用户</option>
+                    <option value="1">房东</option>
+                </select>
+            </div>
+
               <!-- Hidden field for action -->
               <input type="hidden" name="action" value="add">
             </div>
@@ -141,6 +149,7 @@
             <th scope="col">User ID</th>
             <th scope="col">Username</th>
             <th scope="col">Phone</th>
+            <th scope="col">isHost</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -151,6 +160,22 @@
               <th scope="row">${user.id}</th>
               <td>${user.username}</td>
               <td>${user.phone}</td>
+
+            <td>
+                <c:choose>
+                    <c:when test="${user.isHost eq 0}">
+                        用户
+                    </c:when>
+                    <c:when test="${user.isHost eq 1}">
+                        房东
+                    </c:when>
+                    <c:otherwise>
+                        <!-- 默认显示 -->
+                        ${user.isHost}
+                    </c:otherwise>
+                </c:choose>
+            </td>
+
               <td>
 
                 <!-- 触发模态框的编辑按钮 -->
@@ -181,6 +206,13 @@
                                                 <div class="form-group">
                                                     <label for="phone">Phone</label>
                                                     <input type="text" class="form-control" id="phone" name="phone" value="${user.phone}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="isHost">IsHost</label>
+                                                    <select class="form-control" id="isHost" name="isHost">
+                                                        <option value="0" ${user.isHost == 0 ? 'selected' : ''}>用户</option>
+                                                        <option value="1" ${user.isHost == 1 ? 'selected' : ''}>房东</option>
+                                                    </select>
                                                 </div>
                                                 <!-- 隐藏用户ID -->
                                                 <input type="hidden" name="userId" value="${user.id}">

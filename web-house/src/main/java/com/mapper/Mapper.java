@@ -12,12 +12,12 @@ public interface Mapper {
     User getUserById(int id);
     void updateUser(User user);
     void addUser(User user);
-
     List<House> getAllHouses();
-    House getHouseById(int id);
     void deleteHouseById(int id);
+    House getHouseById(int id);
     void updateHouse(House house);
     void addHouse(House house);
+
 }
 
 

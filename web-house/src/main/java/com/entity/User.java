@@ -2,22 +2,28 @@ package com.entity;
 
 public class User {
 
-    public User(int id,String username,String userPassword,String phone){
+    public User(int id,String username,String userPassword,String phone, int isHost){
         this.id = id;
         this.username = username;
         this.password = userPassword;
         this.phone = phone;
+        this.isHost = isHost;
     }
-    public User(String username, String password, String phone) {
+    public User(String username, String password, String phone, int isHost) {
         this.username = username;
         this.password = password;
         this.phone = phone;
+        this.isHost = isHost;
     }
 
     private int id;
     private String username;
     private  String password;
+
+
+
     private String phone;
+    private int isHost;
 
     public int getId() {
         return id;
@@ -45,6 +51,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getIsHost() {
+        return isHost;
+    }
+
+    public void setIsHost(int isHost) {
+        this.isHost = isHost;
     }
 
     public void setPhone(String phone) {

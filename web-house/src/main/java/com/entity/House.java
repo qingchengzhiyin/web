@@ -7,33 +7,32 @@ public class House {
     private String address;
     private int price;
     private int checkStatement;
-    private Date time;
-    private int rentStatement;
-    private int hostId;
-    private Integer rentUserId; // 可能为空
+    private int hostUserId; // 更新为对应的数据库字段名
+    private String image;
+    private String title;
 
-    public House(int houseId, String address, int price, int checkStatement, Date time, int rentStatement, int hostId, int rentUserId) {
-        this.houseId=houseId;
-        this.address=address;
-        this.price=price;
-        this.checkStatement=checkStatement;
-        this.time=time;
-        this.rentStatement=rentStatement;
-        this.hostId=hostId;
-        this.rentUserId=rentUserId;
+    // 构造函数
+    public House(int houseId, String address, int price, int checkStatement, int hostUserId, String image, String title) {
+        this.houseId = houseId;
+        this.address = address;
+        this.price = price;
+        this.checkStatement = checkStatement;
+        this.hostUserId = hostUserId;
+        this.image = image;
+        this.title = title;
     }
 
-    public House(String address, int price, int checkStatement, Date time, int rentStatement, int hostId, int rentUserId) {
-        this.address=address;
-        this.price=price;
-        this.checkStatement=checkStatement;
-        this.time=time;
-        this.rentStatement=rentStatement;
-        this.hostId=hostId;
-        this.rentUserId=rentUserId;
+    public House(String address, int price, int checkStatement, int hostUserId, String image, String title) {
+        this.address = address;
+        this.price = price;
+        this.checkStatement = checkStatement;
+        this.hostUserId = hostUserId;
+        this.image = image;
+        this.title = title;
     }
 
     // Getters and setters
+    // ...（略去其他方法）
 
     public int getHouseId() {
         return houseId;
@@ -67,50 +66,29 @@ public class House {
         this.checkStatement = checkStatement;
     }
 
-    public Date getTime() {
-        return time;
+    public int getHostUserId() {
+        return hostUserId;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setHostUserId(int hostUserId) {
+        this.hostUserId = hostUserId;
     }
 
-    public int getRentStatement() {
-        return rentStatement;
+    public String getImage() {
+        return image;
     }
 
-    public void setRentStatement(int rentStatement) {
-        this.rentStatement = rentStatement;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public int getHostId() {
-        return hostId;
+    public String getTitle() {
+        return title;
     }
 
-    public void setHostId(int hostId) {
-        this.hostId = hostId;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public Integer getRentUserId() {
-        return rentUserId;
-    }
 
-    public void setRentUserId(Integer rentUserId) {
-        this.rentUserId = rentUserId;
-    }
-
-    // toString 方法，方便调试
-    @Override
-    public String toString() {
-        return "House{" +
-                "houseId=" + houseId +
-                ", address='" + address + '\'' +
-                ", price=" + price +
-                ", checkStatement=" + checkStatement +
-                ", time=" + time +
-                ", rentStatement=" + rentStatement +
-                ", hostId=" + hostId +
-                ", rentUserId=" + rentUserId +
-                '}';
-    }
 }

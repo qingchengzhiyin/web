@@ -8,6 +8,9 @@
   <title>User Management - Admin Panel</title>
   <!-- Include Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Lightbox CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+
   <style>
     /* Optional: Custom styles */
     /* Adjust table heading styles */
@@ -86,22 +89,22 @@
 
   <!-- User Information Table -->
   <div class="container mt-4">
-    <h2>House Management</h2>
+    <h2>User Management</h2>
 
     <!-- Add User Button -->
-    <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addHouseModal">
+    <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addUserModal">
       添加房源
     </button>
 
     <!-- Add User Modal -->
-    <div class="modal fade" id="addHouseModal" tabindex="-1" role="dialog" aria-labelledby="addHouseModalLabel" aria-hidden="true">
-      <!-- Modal Content for Adding House -->
-      <!-- Add House Form -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
+      <!-- Modal Content for Adding User -->
+      <!-- Add User Form -->
       <form id="addForm" action="/web/admin/houses" method="post">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="addHouseModalLabel">添加房源</h5>
+              <h5 class="modal-title" id="addUserModalLabel">添加房源</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -112,29 +115,33 @@
                 <input type="text" class="form-control" id="newAddress" name="newAddress" placeholder="请输入地址">
               </div>
               <div class="form-group">
-                <label for="newPrice">密码</label>
+                <label for="newPrice">价格</label>
                 <input type="text" class="form-control" id="newPrice" name="newPrice" placeholder="请输入价格">
               </div>
-              <div class="form-group">
+            <div class="form-group">
                 <label for="newCheckStatement">审核情况</label>
-                <input type="text" class="form-control" id="newCheckStatement" name="newCheckStatement" placeholder="请输入审核情况">
+                <select class="form-control" id="newCheckStatement" name="newCheckStatement">
+                    <option value="-1" style="color: red;">审核不通过</option>
+                    <option value="0" style="color: brown;" selected>未审核</option>
+                    <option value="1" style="color: green;">审核通过</option>
+                </select>
+            </div>
+
+
+              <div class="form-group">
+                <label for="newHostUserId">房东</label>
+                <input type="text" class="form-control" id="newHostUserId" name="newHostUserId" placeholder="请输入房东">
               </div>
               <div class="form-group">
-                <label for="newTime">发布时间</label>
-                <input type="text" class="form-control" id="newTime" name="newTime" placeholder="请输入发布时间">
+                <label for="newImaget">图片</label>
+                <input type="text" class="form-control" id="newImage" name="newImage" placeholder="请输入图片">
               </div>
               <div class="form-group">
-                <label for="newRentStatement">租住情况</label>
-                <input type="text" class="form-control" id="newRentStatement" name="newRentStatement" placeholder="请输入租住情况">
+                <label for="newTitle">标题</label>
+                <input type="text" class="form-control" id="newTitle" name="newTitle" placeholder="请输入标题">
               </div>
-              <div class="form-group">
-                <label for="newHostId">房东</label>
-                <input type="text" class="form-control" id="newHostId" name="newHostId" placeholder="请输入房东">
-              </div>
-              <div class="form-group">
-                <label for="newRentUserId">租户</label>
-                <input type="text" class="form-control" id="newRentUserId" name="newRentUserId" placeholder="请输入房东">
-              </div>
+
+
               <!-- Hidden field for action -->
               <input type="hidden" name="action" value="add">
             </div>
@@ -154,15 +161,14 @@
       <table class="table table-bordered">
         <thead class="thead-light">
           <tr>
-            <th scope="col">House ID</th>
+            <th scope="col">HouseID</th>
             <th scope="col">address</th>
             <th scope="col">price</th>
             <th scope="col">checkStatement</th>
-            <th scope="col">time</th>
-            <th scope="col">rentStatement</th>
-            <th scope="col">hostId</th>
-            <th scope="col">rentUserId</th>
-            <th scope="col">action</th>
+            <th scope="col">hostUserId</th>
+            <th scope="col">image</th>
+            <th scope="col">title</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -170,14 +176,32 @@
           <c:forEach items="${houseList}" var="house">
             <tr>
               <th scope="row">${house.houseId}</th>
+
               <td>${house.address}</td>
               <td>${house.price}</td>
-              <td>${house.checkStatement}</td>
-              <td>${house.time}</td>
-              <td>${house.rentStatement}</td>
-              <td>${house.hostId}</td>
-              <td>${house.rentUserId}</td>
+            <c:choose>
+              <c:when test="${house.checkStatement eq -1}">
+                <td style="color: red;">审核不通过</td>
+              </c:when>
+              <c:when test="${house.checkStatement eq 0}">
+                <td style="color: brown;">未审核</td>
+              </c:when>
+              <c:when test="${house.checkStatement eq 1}">
+                <td style="color: green;">审核通过</td>
+              </c:when>
+              <c:otherwise>
+                <td>其他状态</td>
+              </c:otherwise>
+            </c:choose>
 
+              <td>${house.hostUserId}</td>
+            <td>
+                <a href="../image/${house.image}" data-lightbox="house-images" data-title="House Image">
+                    <img src="../image/${house.image}" alt="House Image" style="width: 200px; height: 150px;">
+                </a>
+            </td>
+
+              <td>${house.title}</td>
               <td>
 
                 <!-- 触发模态框的编辑按钮 -->
@@ -195,41 +219,44 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="editHouseModalLabel">Edit User</h5>
+                                                <h5 class="modal-title" id="editHouseModalLabel">Edit House</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="form-group">
-                                                    <label for="address">address</label>
+                                                    <label for="username">address</label>
                                                     <input type="text" class="form-control" id="address" name="address" value="${house.address}">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="price">price</label>
+                                                    <label for="phone">price</label>
                                                     <input type="text" class="form-control" id="price" name="price" value="${house.price}">
                                                 </div>
                                                 <div class="form-group">
-                                                      <label for="checkStatement">checkstatement</label>
-                                                      <input type="text" class="form-control" id="checkStatement" name="checkStatement" value="${house.checkStatement}">
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="time">time</label>
-                                                      <input type="text" class="form-control" id="time" name="time" value="${house.time}">
-                                                  </div>
-                                                <div class="form-group">
-                                                    <label for="rentStatement">price</label>
-                                                    <input type="text" class="form-control" id="rentStatement" name="rentStatement" value="${house.rentStatement}">
+                                                    <label for="editCheckStatement">审核情况</label>
+                                                    <select class="form-control" id="editCheckStatement" name="editCheckStatement">
+                                                        <option value="-1" style="color: red;" ${house.checkStatement eq -1 ? 'selected' : ''}>审核不通过</option>
+                                                        <option value="0" style="color: brown;" ${house.checkStatement eq 0 ? 'selected' : ''}>未审核</option>
+                                                        <option value="1" style="color: green;" ${house.checkStatement eq 1 ? 'selected' : ''}>审核通过</option>
+                                                    </select>
                                                 </div>
                                                 <div class="form-group">
-                                                      <label for="hostId">hostId</label>
-                                                      <input type="text" class="form-control" id="hostId" name="hostId" value="${house.hostId}">
-                                                  </div>
-                                                  <div class="form-group">
-                                                      <label for="rentUserId">rentUserId</label>
-                                                      <input type="text" class="form-control" id="rentUserId" name="rentUserId" value="${house.rentUserId}">
-                                                  </div>
-                                                <!-- 隐藏房源ID -->
+                                                    <label for="username">hostUserId</label>
+                                                    <input type="text" class="form-control" id="hostUserId" name="hostUserId" value="${house.hostUserId}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="phone">image</label>
+                                                    <input type="text" class="form-control" id="image" name="image" value="${house.image}">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="phone">title</label>
+                                                    <input type="text" class="form-control" id="title" name="title" value="${house.title}">
+                                                </div>
+
+
+                                                <!-- 隐藏用户ID -->
                                                 <input type="hidden" name="houseId" value="${house.houseId}">
                                                 <input type="hidden" name="action" value="edit">
                                             </div>
@@ -243,9 +270,9 @@
                                 </form>
                             </div>
 
-               <form action="/web/admin/houses" method="post">
+               <form action="/web/admin/users" method="post">
                    <input type="hidden" name="action" value="delete">
-                   <input type="hidden" name="houseId" value="${house.houseId}">
+                   <input type="hidden" name="userId" value="${house.houseId}">
                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                </form>
 
@@ -267,6 +294,9 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- Include Bootstrap JS -->
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Lightbox JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
 
 
 </body>

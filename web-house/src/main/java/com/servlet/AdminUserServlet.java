@@ -51,6 +51,7 @@ public class AdminUserServlet extends HttpServlet {
             String userId = request.getParameter("userId");
             String username = request.getParameter("username");
             String phone = request.getParameter("phone");
+            int isHost = Integer.parseInt(request.getParameter("isHost"));
 
 
             try (SqlSession sqlSession = MyBatisUtil.getSqlSessionFactory().openSession()) {
@@ -62,6 +63,7 @@ public class AdminUserServlet extends HttpServlet {
                     // 更新用户信息
                     user.setUsername(username);
                     user.setPhone(phone);
+                    user.setIsHost(isHost);
                     userMapper.updateUser(user);
                     sqlSession.commit();
                 }
@@ -76,7 +78,9 @@ public class AdminUserServlet extends HttpServlet {
                 String userName = request.getParameter("newUsername");
                 String userPassword = request.getParameter("newPassword");
                 String phone = request.getParameter("newPhone");
-                User newUser = new User(userName,userPassword,phone);
+                int isHost = Integer.parseInt(request.getParameter("newIsHost"));
+//                System.out.println(isHost);
+                User newUser = new User(userName,userPassword,phone,isHost);
 //                System.out.println(userName);
 
                 userMapper.addUser(newUser);
